@@ -131,16 +131,18 @@ ChatCompletionsClient <- R6::R6Class(
         body <- c(body, dots)
       }
       
-      result <- self$client$request("POST", "/chat/completions", body = body, stream = !is.null(stream) && stream)
+      # For streaming, pass callback to request method
+      is_streaming <- !is.null(stream) && stream
       
-      # Process streaming results if callback provided
-      if (!is.null(callback) && is.list(result)) {
-        for (chunk in result) {
-          callback(chunk)
-        }
-        return(invisible(result))
-      }
+      result <- self$client$request(
+        "POST", 
+        "/chat/completions", 
+        body = body, 
+        stream = is_streaming,
+        callback = if (is_streaming) callback else NULL
+      )
       
+      # Return result
       result
     }
   )

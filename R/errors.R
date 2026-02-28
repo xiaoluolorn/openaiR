@@ -84,9 +84,10 @@ handle_response <- function(resp) {
 #' Handle streaming response from OpenAI API
 #'
 #' @param req httr2 request object
+#' @param callback Function to call for each chunk (optional)
 #' @return List of parsed SSE data chunks
 #' @keywords internal
-handle_stream_response <- function(req) {
+handle_stream_response <- function(req, callback = NULL) {
   chunks <- list()
   
   # Perform streaming request using httr2's streaming API
@@ -115,6 +116,11 @@ handle_stream_response <- function(req) {
               {
                 data_json <- jsonlite::fromJSON(data_str, simplifyVector = FALSE)
                 chunks[[length(chunks) + 1]] <<- data_json
+                
+                # Call user callback if provided
+                if (!is.null(callback)) {
+                  callback(data_json)
+                }
               },
               error = function(e) {
                 # Skip invalid JSON

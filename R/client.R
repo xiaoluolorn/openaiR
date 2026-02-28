@@ -88,9 +88,10 @@ OpenAI <- R6Class(
     #' @param body Request body (list). Optional.
     #' @param query Query parameters (list). Optional.
     #' @param stream Whether to stream response. Default: FALSE
+    #' @param callback Function to call for each stream chunk (optional)
     #' @return Parsed JSON response or stream callback
     #' @keywords internal
-    request = function(method, path, body = NULL, query = NULL, stream = FALSE) {
+    request = function(method, path, body = NULL, query = NULL, stream = FALSE, callback = NULL) {
       url <- paste0(self$base_url, path)
       
       req <- httr2::request(url) |>
@@ -121,8 +122,8 @@ OpenAI <- R6Class(
       tryCatch(
         {
           if (stream) {
-            # Handle streaming response
-            handle_stream_response(req)
+            # Handle streaming response with callback
+            handle_stream_response(req, callback = callback)
           } else {
             resp <- httr2::req_perform(req)
             handle_response(resp)
