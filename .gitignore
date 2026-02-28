@@ -1,0 +1,61 @@
+# R specific
+.Rhistory
+.Rproj.user
+*.Rproj.user
+*.rsproj
+*.rds
+*.RData
+*.rda
+*.Rcheck/
+*_Rcheck/
+.Rbuildignore
+*.tar.gz
+*.tar.xz
+*.tgz
+*.zip
+vignettes/*.html
+tests/testthat/_snaps/
+*.revdep/
+*.log
+*.out
+
+# Development
+.Rapp.history
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Environment
+.Renviron
+.Renviron.local
+.renv/
+renv.lock
+packrat/
+
+# Secrets
+*.key
+*.pem
+*.crt
+secrets/
+credentials/
+
+# Cache
+cache/
+*.cache
+
+# Build artifacts
+inst/doc/
+man/*.Rd
+NAMESPACE
+
+# Coverage
+covr/
+*.gcda
+*.gcno
+*.gcov
+
+# Local configuration
+config.local.yml
+settings.local.yml
