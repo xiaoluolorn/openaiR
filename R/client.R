@@ -136,36 +136,6 @@ OpenAI <- R6Class(
         }
       )
     }
-      
-      # Add project header if present
-      if (!is.null(self$project)) {
-        req <- httr2::req_headers(req, "OpenAI-Project" = self$project)
-      }
-      
-      # Add query parameters
-      if (!is.null(query)) {
-        req <- httr2::req_url_query(req, !!!query)
-      }
-      
-      # Add body
-      if (!is.null(body)) {
-        req <- httr2::req_body_json(req, body)
-      }
-      
-      # Send request
-      tryCatch(
-        {
-          resp <- httr2::req_perform(req)
-          handle_response(resp)
-        },
-        error = function(e) {
-          OpenAIConnectionError(
-            sprintf("Failed to connect to OpenAI API: %s", e$message),
-            parent = e
-          )
-        }
-      )
-    }
   ),
   
   private = list(
