@@ -133,7 +133,7 @@ ResponsesClient <- R6::R6Class(
       
       self$client$request("GET", paste0("/responses/", response_id, "/input_items"), query = query)
     }
-  }
+  )
 )
 
 #' Create a response (convenience function)

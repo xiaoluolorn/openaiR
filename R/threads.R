@@ -107,7 +107,7 @@ ThreadsClient <- R6::R6Class(
         callback = if (is_streaming) callback else NULL
       )
     }
-  }
+  )
 )
 
 #' Runs Client
@@ -268,7 +268,7 @@ RunsClient <- R6::R6Class(
         callback = if (is_streaming) callback else NULL
       )
     }
-  }
+  )
 )
 
 #' Run Steps Client
@@ -314,7 +314,7 @@ RunStepsClient <- R6::R6Class(
     retrieve = function(thread_id, run_id, step_id) {
       self$client$request("GET", paste0("/threads/", thread_id, "/runs/", run_id, "/steps/", step_id))
     }
-  }
+  )
 )
 
 #' Messages Client
@@ -401,7 +401,7 @@ MessagesClient <- R6::R6Class(
     delete = function(thread_id, message_id) {
       self$client$request("DELETE", paste0("/threads/", thread_id, "/messages/", message_id))
     }
-  }
+  )
 )
 
 # Convenience functions for threads
