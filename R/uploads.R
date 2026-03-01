@@ -41,11 +41,11 @@ UploadsClient <- R6::R6Class(
     #' @param data Raw data for this part
     #' @return Upload part object
     add_part = function(upload_id, data) {
-      req <- httr2::request(paste0(self$client$base_url, "/uploads/", upload_id, "/parts")) |>
-        httr2::req_method("POST") |>
-        httr2::req_headers(
-          "Authorization" = paste("Bearer", self$client$api_key)
-        )
+      req <- httr2::request(paste0(self$client$base_url, "/uploads/", upload_id, "/parts"))
+      req <- httr2::req_method(req, "POST")
+      req <- httr2::req_headers(req,
+        "Authorization" = paste("Bearer", self$client$api_key)
+      )
       
       if (!is.null(self$client$organization)) {
         req <- httr2::req_headers(req, "OpenAI-Organization" = self$client$organization)
@@ -80,7 +80,7 @@ UploadsClient <- R6::R6Class(
     cancel = function(upload_id) {
       self$client$request("POST", paste0("/uploads/", upload_id, "/cancel"))
     }
-  }
+  )
 )
 
 #' Create an upload (convenience function)

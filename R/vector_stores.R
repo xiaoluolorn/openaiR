@@ -115,7 +115,7 @@ VectorStoresClient <- R6::R6Class(
       
       self$client$request("POST", paste0("/vector_stores/", vector_store_id, "/search"), body = body)
     }
-  }
+  )
 )
 
 #' Vector Store Files Client
@@ -203,10 +203,10 @@ VectorStoreFilesClient <- R6::R6Class(
     #' @param file_id File ID
     #' @return Raw file content
     content = function(vector_store_id, file_id) {
-      req <- httr2::request(paste0(self$client$base_url, "/vector_stores/", vector_store_id, "/files/", file_id, "/content")) |>
-        httr2::req_method("GET") |>
-        httr2::req_headers("Authorization" = paste("Bearer", self$client$api_key)) |>
-        httr2::req_timeout(self$client$timeout)
+      req <- httr2::request(paste0(self$client$base_url, "/vector_stores/", vector_store_id, "/files/", file_id, "/content"))
+      req <- httr2::req_method(req, "GET")
+      req <- httr2::req_headers(req, "Authorization" = paste("Bearer", self$client$api_key))
+      req <- httr2::req_timeout(req, self$client$timeout)
       
       if (!is.null(self$client$organization)) {
         req <- httr2::req_headers(req, "OpenAI-Organization" = self$client$organization)
@@ -221,7 +221,7 @@ VectorStoreFilesClient <- R6::R6Class(
       
       resp$body
     }
-  }
+  )
 )
 
 #' Vector Store File Batches Client
@@ -289,7 +289,7 @@ VectorStoreFileBatchesClient <- R6::R6Class(
       
       self$client$request("GET", paste0("/vector_stores/", vector_store_id, "/file_batches/", batch_id, "/files"), query = query)
     }
-  }
+  )
 )
 
 # Convenience functions for vector stores
