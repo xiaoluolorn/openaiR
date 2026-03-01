@@ -1,180 +1,423 @@
 #' Helper Functions for Multimodal Content
 #'
-#' Functions to create image content for multimodal models.
+#' Functions to construct image content objects for sending images to
+#' vision-capable LLMs via the Chat Completions API.
+#'
+#' @description
+#' Most modern LLMs (GPT-4o, Claude 3, Gemini, Qwen-VL, etc.) support
+#' multimodal input — you can send both text and images in the same message.
+#' Images are embedded inside the \code{content} field of a \code{"user"} message
+#' as a list of content parts.
+#'
+#' There are three ways to provide an image:
+#' \enumerate{
+#'   \item \strong{Image URL} — the model downloads it directly (\code{\link{image_from_url}})
+#'   \item \strong{Local file} — read and Base64-encoded automatically (\code{\link{image_from_file}})
+#'   \item \strong{R plot} — save a ggplot2 / base R figure and send it (\code{\link{image_from_plot}})
+#' }
+#'
+#' Use \code{\link{create_multimodal_message}} to combine text + multiple images
+#' into a single ready-to-use message object.
 #'
 #' @name multimodal
-#' @keywords multimodal
+#' @keywords multimodal vision image
 NULL
 
-#' Create image content from URL
+# ---------------------------------------------------------------------------
+# image_from_url
+# ---------------------------------------------------------------------------
+
+#' Create Image Content from a URL
 #'
-#' @param url Image URL
-#' @param detail Detail level ("low", "high", or "auto"). Default: "auto"
-#' @return Image content object for messages
+#' Builds a content part object that tells the model to fetch and analyze
+#' an image from a public web URL. The URL must be directly accessible
+#' (no login required).
+#'
+#' @param url Character. A publicly accessible image URL.
+#'   Supported formats: JPEG, PNG, GIF (static), WebP.
+#'   Example: \code{"https://example.com/chart.png"}
+#'
+#' @param detail Character. Controls how the model perceives the image,
+#'   trading off between cost/speed and accuracy:
+#'   \itemize{
+#'     \item \code{"auto"} (default) — model chooses based on image size
+#'     \item \code{"low"} — 85 tokens flat; fast and cheap; good for
+#'           simple images, icons, or when spatial detail is unimportant
+#'     \item \code{"high"} — tiles the image at 512px squares (up to 1105
+#'           extra tokens); use for charts with small text, detailed figures,
+#'           or when precise spatial understanding is needed
+#'   }
+#'
+#' @return A named list (content part) to be placed inside a message's
+#'   \code{content} list. Use with \code{\link{create_multimodal_message}}
+#'   or construct messages manually.
+#'
 #' @export
+#' @seealso \code{\link{image_from_file}}, \code{\link{image_from_plot}},
+#'   \code{\link{create_multimodal_message}}
 #'
 #' @examples
 #' \dontrun{
-#' # Create image content from URL
-#' image_content <- image_from_url("https://example.com/image.jpg")
+#' library(openaiR)
+#' client <- OpenAI$new(api_key = "sk-xxxxxx")
 #'
-#' # Use in message
+#' # Build an image part from a URL
+#' img <- image_from_url(
+#'   url    = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/402px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
+#'   detail = "low"
+#' )
+#'
+#' # Assemble a message manually
 #' messages <- list(
 #'   list(
 #'     role = "user",
 #'     content = list(
-#'       list(type = "text", text = "What's in this image?"),
-#'       image_content
+#'       list(type = "text", text = "What painting is this?"),
+#'       img
 #'     )
 #'   )
 #' )
 #'
 #' response <- client$chat$completions$create(
 #'   messages = messages,
-#'   model = "gpt-4-vision-preview"
+#'   model    = "gpt-4o"
 #' )
+#' cat(response$choices[[1]]$message$content)
 #' }
 image_from_url <- function(url, detail = "auto") {
   list(
-    type = "image_url",
-    image_url = list(
-      url = url,
-      detail = detail
-    )
+    type      = "image_url",
+    image_url = list(url = url, detail = detail)
   )
 }
 
-#' Create image content from local file (base64 encoded)
+# ---------------------------------------------------------------------------
+# image_from_file
+# ---------------------------------------------------------------------------
+
+#' Create Image Content from a Local File
 #'
-#' @param file_path Path to local image file
-#' @param mime_type MIME type of the image (e.g., "image/jpeg", "image/png").
-#'        If NULL, will try to auto-detect from file extension.
-#' @param detail Detail level ("low", "high", or "auto"). Default: "auto"
-#' @return Image content object for messages
+#' Reads a local image file, encodes it as Base64, and wraps it in a
+#' data URI so it can be sent directly to the model without hosting the
+#' file anywhere. This is the recommended approach for local figures,
+#' screenshots, or any image not accessible via a public URL.
+#'
+#' @param file_path Character. Absolute or relative path to a local image
+#'   file. Supported formats: \code{.jpg}/\code{.jpeg}, \code{.png},
+#'   \code{.gif} (static), \code{.webp}.
+#'   Maximum recommended size: \strong{20 MB} (smaller is faster).
+#'
+#' @param mime_type Character or \code{NULL}. MIME type of the image.
+#'   When \code{NULL} (default), auto-detected from the file extension:
+#'   \itemize{
+#'     \item \code{.jpg} / \code{.jpeg} → \code{"image/jpeg"}
+#'     \item \code{.png} → \code{"image/png"}
+#'     \item \code{.gif} → \code{"image/gif"}
+#'     \item \code{.webp} → \code{"image/webp"}
+#'   }
+#'   Override only if the extension is missing or wrong.
+#'
+#' @param detail Character. Image detail level: \code{"auto"} (default),
+#'   \code{"low"}, or \code{"high"}. See \code{\link{image_from_url}} for
+#'   full explanation.
+#'
+#' @return A named list (content part) ready to include in a message's
+#'   \code{content} list.
+#'
 #' @export
+#' @seealso \code{\link{image_from_url}}, \code{\link{image_from_plot}},
+#'   \code{\link{create_multimodal_message}}
 #'
 #' @examples
 #' \dontrun{
-#' # Create image content from local file
-#' image_content <- image_from_file("path/to/image.jpg")
+#' library(openaiR)
+#' client <- OpenAI$new(api_key = "sk-xxxxxx")
 #'
-#' # Use in message
+#' # Send a local chart image
+#' img <- image_from_file("results/regression_plot.png", detail = "high")
+#'
 #' messages <- list(
 #'   list(
 #'     role = "user",
 #'     content = list(
-#'       list(type = "text", text = "What's in this image?"),
-#'       image_content
+#'       list(
+#'         type = "text",
+#'         text = "This is a residuals-vs-fitted plot. Does it show heteroskedasticity?"
+#'       ),
+#'       img
 #'     )
 #'   )
 #' )
 #'
 #' response <- client$chat$completions$create(
 #'   messages = messages,
-#'   model = "gpt-4-vision-preview"
+#'   model    = "gpt-4o"
 #' )
+#' cat(response$choices[[1]]$message$content)
 #' }
 image_from_file <- function(file_path, mime_type = NULL, detail = "auto") {
-  # Auto-detect MIME type if not provided
+  if (!file.exists(file_path)) {
+    stop(sprintf("Image file not found: %s", file_path))
+  }
+
+  # Auto-detect MIME type from extension
   if (is.null(mime_type)) {
     ext <- tolower(tools::file_ext(file_path))
     mime_type <- switch(ext,
-      jpg = "image/jpeg",
+      jpg  = "image/jpeg",
       jpeg = "image/jpeg",
-      png = "image/png",
-      gif = "image/gif",
+      png  = "image/png",
+      gif  = "image/gif",
       webp = "image/webp",
-      "image/jpeg"  # default
+      "image/jpeg" # default fallback
     )
   }
-  
-  # Read and encode file
+
+  # Read binary and encode as Base64
   file_content <- readBin(file_path, "raw", file.info(file_path)$size)
   base64_data <- base64_enc(file_content)
-  
-  # Create data URL
+
+  # Build data URI:  data:<mime>;base64,<data>
   data_url <- paste0("data:", mime_type, ";base64,", base64_data)
-  
+
   list(
-    type = "image_url",
-    image_url = list(
-      url = data_url,
-      detail = detail
-    )
+    type      = "image_url",
+    image_url = list(url = data_url, detail = detail)
   )
 }
 
-#' Create text content for multimodal messages
+# ---------------------------------------------------------------------------
+# image_from_plot  (NEW)
+# ---------------------------------------------------------------------------
+
+#' Create Image Content from an R Plot Object
 #'
-#' @param text Text content
-#' @return Text content object for messages
+#' Renders a ggplot2 plot (or any R base graphics expression) to a temporary
+#' PNG file and encodes it as Base64, ready to be sent to a vision LLM.
+#' This lets you analyze charts produced in R without saving them manually.
+#'
+#' @param plot A \code{ggplot} object (\pkg{ggplot2}), or \code{NULL} to capture
+#'   the \emph{current} base-R graphics device (call your \code{plot()}/
+#'   \code{hist()} etc. first, then call \code{image_from_plot(NULL)}).
+#'
+#' @param width Numeric. Width of the saved PNG in inches. Default: \code{7}.
+#'
+#' @param height Numeric. Height of the saved PNG in inches. Default: \code{5}.
+#'
+#' @param dpi Integer. Resolution in dots per inch. Higher DPI gives sharper
+#'   images (important for text readability) but larger file size.
+#'   Default: \code{150}. Use \code{200+} when text in plots must be legible.
+#'
+#' @param detail Character. Image detail level passed to the API:
+#'   \code{"auto"} (default), \code{"low"}, or \code{"high"}.
+#'
+#' @return A named list (content part) ready to include in a message's
+#'   \code{content} list.
+#'
 #' @export
+#' @seealso \code{\link{image_from_file}}, \code{\link{create_multimodal_message}}
 #'
 #' @examples
 #' \dontrun{
-#' text_content <- text_content("What's in this image?")
+#' library(openaiR)
+#' library(ggplot2)
+#' client <- OpenAI$new(api_key = "sk-xxxxxx")
+#'
+#' # Build a ggplot2 chart
+#' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+#'   geom_point() +
+#'   geom_smooth(method = "lm") +
+#'   labs(title = "Car Weight vs Fuel Efficiency", x = "Weight", y = "MPG")
+#'
+#' # Send plot directly to GPT-4o
+#' response <- client$chat$completions$create(
+#'   messages = list(
+#'     list(
+#'       role = "user",
+#'       content = list(
+#'         list(
+#'           type = "text",
+#'           text = "Describe the relationship shown in this scatter plot."
+#'         ),
+#'         image_from_plot(p, dpi = 150)
+#'       )
+#'     )
+#'   ),
+#'   model = "gpt-4o"
+#' )
+#' cat(response$choices[[1]]$message$content)
+#' }
+image_from_plot <- function(plot = NULL, width = 7, height = 5,
+                            dpi = 150, detail = "auto") {
+  tmp <- tempfile(fileext = ".png")
+  on.exit(unlink(tmp), add = TRUE)
+
+  if (!is.null(plot)) {
+    # ggplot2 object
+    if (!requireNamespace("ggplot2", quietly = TRUE)) {
+      stop("Package 'ggplot2' is required. Install with: install.packages('ggplot2')")
+    }
+    ggplot2::ggsave(tmp,
+      plot = plot, width = width, height = height,
+      dpi = dpi, units = "in", device = "png"
+    )
+  } else {
+    # Capture current base-R graphics device
+    grDevices::dev.copy(png,
+      filename = tmp,
+      width = width * dpi, height = height * dpi,
+      res = dpi
+    )
+    grDevices::dev.off()
+  }
+
+  image_from_file(tmp, mime_type = "image/png", detail = detail)
+}
+
+# ---------------------------------------------------------------------------
+# text_content
+# ---------------------------------------------------------------------------
+
+#' Create a Text Content Part
+#'
+#' Wraps a plain text string into the content-part format required by the
+#' multimodal Chat Completions API. Useful when building message \code{content}
+#' lists manually alongside image parts.
+#'
+#' @param text Character. The text string to include in the message content.
+#'
+#' @return A named list: \code{list(type = "text", text = <text>)}.
+#'
+#' @export
+#' @seealso \code{\link{image_from_url}}, \code{\link{create_multimodal_message}}
+#'
+#' @examples
+#' \dontrun{
+#' part <- text_content("What do you see in this image?")
+#' # Result: list(type = "text", text = "What do you see in this image?")
 #' }
 text_content <- function(text) {
   list(type = "text", text = text)
 }
 
-#' Create a multimodal message with text and images
+# ---------------------------------------------------------------------------
+# create_multimodal_message
+# ---------------------------------------------------------------------------
+
+#' Build a Multimodal User Message (Text + Images)
 #'
-#' @param text Text content (can be NULL if only images)
-#' @param images List of image URLs or file paths
-#' @param detail Detail level for images. Default: "auto"
-#' @return Message object for chat completions
+#' Convenience function that assembles a complete \code{"user"} message object
+#' containing both text and one or more images. Automatically handles URL vs.
+#' local file detection.
+#'
+#' Pass the returned object (or a list of such objects) directly to
+#' \code{client$chat$completions$create(messages = ...)}.
+#'
+#' @param text Character or \code{NULL}. The text prompt accompanying the
+#'   image(s). If \code{NULL}, only images are sent (less common).
+#'
+#' @param images List of image sources. Each element can be:
+#'   \itemize{
+#'     \item A \strong{URL string} starting with \code{"http://"} or
+#'           \code{"https://"} — passed to \code{\link{image_from_url}}
+#'     \item A \strong{local file path string} — passed to
+#'           \code{\link{image_from_file}}
+#'     \item A \strong{pre-built content part} from \code{\link{image_from_url}},
+#'           \code{\link{image_from_file}}, or \code{\link{image_from_plot}}
+#'           (these are passed through as-is)
+#'   }
+#'   Default: \code{NULL} (text-only message).
+#'
+#' @param detail Character. Detail level applied to all images supplied
+#'   as strings. Ignored for pre-built content parts.
+#'   \code{"auto"} (default), \code{"low"}, or \code{"high"}.
+#'
+#' @return A named list representing a \code{"user"} message:
+#' \preformatted{
+#' list(
+#'   role    = "user",
+#'   content = list(
+#'     list(type = "text",      text = <text>),
+#'     list(type = "image_url", image_url = list(url = ..., detail = ...)),
+#'     ...
+#'   )
+#' )
+#' }
+#'
 #' @export
+#' @seealso \code{\link{image_from_url}}, \code{\link{image_from_file}},
+#'   \code{\link{image_from_plot}}
 #'
 #' @examples
 #' \dontrun{
-#' # Message with text and image URL
+#' library(openaiR)
+#' client <- OpenAI$new(api_key = "sk-xxxxxx")
+#'
+#' # --- URL image ---
 #' msg <- create_multimodal_message(
-#'   text = "What's in this image?",
-#'   images = list("https://example.com/image.jpg")
+#'   text   = "What is shown in this chart?",
+#'   images = list("https://example.com/gdp_chart.png")
+#' )
+#' response <- client$chat$completions$create(messages = list(msg), model = "gpt-4o")
+#'
+#' # --- Local file ---
+#' msg <- create_multimodal_message(
+#'   text   = "Identify any statistical issues in this residual plot.",
+#'   images = list("output/resid_plot.png"),
+#'   detail = "high"
 #' )
 #'
-#' # Message with local image file
+#' # --- Multiple images (compare two charts) ---
 #' msg <- create_multimodal_message(
-#'   text = "Describe this image",
-#'   images = list("path/to/image.jpg")
+#'   text   = "Compare these two regression diagnostics plots.",
+#'   images = list("plot_model1.png", "plot_model2.png"),
+#'   detail = "high"
 #' )
 #'
-#' # Use in chat
-#' response <- client$chat$completions$create(
-#'   messages = list(msg),
-#'   model = "gpt-4-vision-preview"
+#' # --- Mix of pre-built parts ---
+#' library(ggplot2)
+#' p <- ggplot(mtcars, aes(wt, mpg)) +
+#'   geom_point()
+#' msg <- create_multimodal_message(
+#'   text   = "Describe the scatter pattern.",
+#'   images = list(image_from_plot(p, dpi = 180))
 #' )
 #' }
-create_multimodal_message <- function(text = NULL, images = NULL, detail = "auto") {
+create_multimodal_message <- function(text = NULL, images = NULL,
+                                      detail = "auto") {
   content <- list()
-  
-  # Add text if provided
+
+  # Add text part first
   if (!is.null(text)) {
     content[[length(content) + 1]] <- text_content(text)
   }
-  
-  # Add images if provided
+
+  # Add image parts
   if (!is.null(images) && length(images) > 0) {
     for (img in images) {
-      if (startsWith(img, "http://") || startsWith(img, "https://")) {
-        # Image URL
-        content[[length(content) + 1]] <- image_from_url(img, detail = detail)
+      if (is.list(img)) {
+        # Already a pre-built content part — pass through as-is
+        content[[length(content) + 1]] <- img
+      } else if (is.character(img)) {
+        if (startsWith(img, "http://") || startsWith(img, "https://")) {
+          content[[length(content) + 1]] <- image_from_url(img, detail = detail)
+        } else {
+          content[[length(content) + 1]] <- image_from_file(img, detail = detail)
+        }
       } else {
-        # Local file path
-        content[[length(content) + 1]] <- image_from_file(img, detail = detail)
+        stop("Each element of 'images' must be a URL string, a file path string, or a pre-built content part list.")
       }
     }
   }
-  
-  list(
-    role = "user",
-    content = content
-  )
+
+  list(role = "user", content = content)
 }
 
-# Helper function for base64 encoding
+# ---------------------------------------------------------------------------
+# internal helper
+# ---------------------------------------------------------------------------
+
+# Base64 encode raw bytes using jsonlite
 base64_enc <- function(data) {
-  # Use jsonlite for base64 encoding
   jsonlite::base64_enc(data)
 }
