@@ -6,6 +6,8 @@ test_that("Completions client initializes", {
 })
 
 test_that("Completions create accepts parameters", {
+  skip_on_cran()
+  skip_if(Sys.getenv("OPENAI_API_KEY") == "" || Sys.getenv("OPENAI_API_KEY") == "test-key", "No valid API key")
   client <- OpenAI$new(api_key = "test-key")
   
   expect_error(

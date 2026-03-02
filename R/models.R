@@ -8,32 +8,32 @@ ModelsClient <- R6::R6Class(
   public = list(
     client = NULL,
     
-    #' Initialize models client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize models client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
     },
     
-    #' List available models
-    #'
-    #' @return Models list response
+    # List available models
+    #
+    # @return Models list response
     list = function() {
       self$client$request("GET", "/models")
     },
     
-    #' Retrieve a specific model
-    #'
-    #' @param model Model ID (e.g., "gpt-4", "text-embedding-ada-002")
-    #' @return Model details
+    # Retrieve a specific model
+    #
+    # @param model Model ID (e.g., "gpt-4", "text-embedding-ada-002")
+    # @return Model details
     retrieve = function(model) {
       self$client$request("GET", paste0("/models/", model))
     },
     
-    #' Delete a fine-tuned model
-    #'
-    #' @param model Model ID
-    #' @return Deletion status
+    # Delete a fine-tuned model
+    #
+    # @param model Model ID
+    # @return Deletion status
     delete = function(model) {
       self$client$request("DELETE", paste0("/models/", model))
     }

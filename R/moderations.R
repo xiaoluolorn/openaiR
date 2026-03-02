@@ -9,18 +9,18 @@ ModerationsClient <- R6::R6Class(
   public = list(
     client = NULL,
     
-    #' Initialize moderations client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize moderations client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
     },
     
-    #' Create a moderation
-    #'
-    #' @param input Text or array of texts to moderate
-    #' @param model Moderation model: "omni-moderation-latest" or "text-moderation-latest"
-    #' @return Moderation response
+    # Create a moderation
+    #
+    # @param input Text or array of texts to moderate
+    # @param model Moderation model: "omni-moderation-latest" or "text-moderation-latest"
+    # @return Moderation response
     create = function(input, model = "omni-moderation-latest") {
       body <- list(
         input = input,

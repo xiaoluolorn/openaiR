@@ -24,14 +24,6 @@ Client for OpenAI Images API (DALL-E).
 \if{html}{\out{<div class="r">}}\preformatted{ImagesClient$new(parent)}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{parent}}{Parent OpenAI client
-Create an image}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ImagesClient-create"></a>}}
@@ -50,31 +42,6 @@ Create an image}
 )}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{prompt}}{Text description of the desired image}
-
-\item{\code{model}}{Model to use (e.g., "dall-e-3", "dall-e-2")}
-
-\item{\code{n}}{Number of images to generate}
-
-\item{\code{quality}}{Quality of generated image ("standard" or "hd")}
-
-\item{\code{response_format}}{Response format ("url" or "b64_json")}
-
-\item{\code{size}}{Size of generated image (e.g., "1024x1024")}
-
-\item{\code{style}}{Style of generated image ("vivid" or "natural")}
-
-\item{\code{user}}{Unique identifier for end user}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Images response
-Create an edited image
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ImagesClient-edit"></a>}}
@@ -93,31 +60,6 @@ Create an edited image
 )}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{image}}{Image file path to edit}
-
-\item{\code{prompt}}{Text description of desired edit}
-
-\item{\code{mask}}{Mask file path (optional)}
-
-\item{\code{model}}{Model to use}
-
-\item{\code{n}}{Number of images to generate}
-
-\item{\code{response_format}}{Response format}
-
-\item{\code{size}}{Size of generated image}
-
-\item{\code{user}}{Unique identifier}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Images response
-Create an image variation
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ImagesClient-create_variation"></a>}}
@@ -134,26 +76,6 @@ Create an image variation
 )}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{image}}{Image file path to vary}
-
-\item{\code{model}}{Model to use}
-
-\item{\code{n}}{Number of images to generate}
-
-\item{\code{response_format}}{Response format}
-
-\item{\code{size}}{Size of generated image}
-
-\item{\code{user}}{Unique identifier}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Images response
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ImagesClient-clone"></a>}}

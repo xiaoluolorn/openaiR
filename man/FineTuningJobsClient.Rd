@@ -8,14 +8,6 @@ Fine-tuning Jobs Client
 
 Fine-tuning Jobs Client
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{checkpoints}}{Checkpoints sub-client
-Create a fine-tuning job}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -54,31 +46,6 @@ Create a fine-tuning job}
 )}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{training_file}}{File ID for training data}
-
-\item{\code{model}}{Model to fine-tune (e.g., "gpt-3.5-turbo")}
-
-\item{\code{hyperparameters}}{Hyperparameters for fine-tuning}
-
-\item{\code{suffix}}{Suffix for the fine-tuned model name}
-
-\item{\code{validation_file}}{File ID for validation data}
-
-\item{\code{integrations}}{List of integrations to enable}
-
-\item{\code{seed}}{Random seed}
-
-\item{\code{method}}{Fine-tuning method (e.g., "supervised", "dpo")}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Fine-tuning job object
-List fine-tuning jobs
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-FineTuningJobsClient-list"></a>}}
@@ -88,19 +55,6 @@ List fine-tuning jobs
 \if{html}{\out{<div class="r">}}\preformatted{FineTuningJobsClient$list(after = NULL, limit = NULL)}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{after}}{Identifier for the last job from previous request}
-
-\item{\code{limit}}{Number of jobs to retrieve}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of fine-tuning jobs
-Retrieve a fine-tuning job
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-FineTuningJobsClient-retrieve"></a>}}
@@ -110,17 +64,6 @@ Retrieve a fine-tuning job
 \if{html}{\out{<div class="r">}}\preformatted{FineTuningJobsClient$retrieve(fine_tuning_job_id)}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{fine_tuning_job_id}}{Fine-tuning job ID}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Fine-tuning job details
-Cancel a fine-tuning job
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-FineTuningJobsClient-cancel"></a>}}
@@ -130,17 +73,6 @@ Cancel a fine-tuning job
 \if{html}{\out{<div class="r">}}\preformatted{FineTuningJobsClient$cancel(fine_tuning_job_id)}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{fine_tuning_job_id}}{Fine-tuning job ID}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Cancelled fine-tuning job
-List fine-tuning events
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-FineTuningJobsClient-list_events"></a>}}
@@ -154,20 +86,6 @@ List fine-tuning events
 )}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{fine_tuning_job_id}}{Fine-tuning job ID}
-
-\item{\code{after}}{Identifier for the last event from previous request}
-
-\item{\code{limit}}{Number of events to retrieve}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-List of fine-tuning events
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-FineTuningJobsClient-clone"></a>}}

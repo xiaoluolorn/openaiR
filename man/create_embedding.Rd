@@ -7,7 +7,7 @@
 create_embedding(input, model = "text-embedding-ada-002", ...)
 }
 \arguments{
-\item{input}{\strong{\link{Required}} A character string or list of strings to embed.}
+\item{input}{\strong{Required.} A character string or list of strings to embed.}
 
 \item{model}{Character. Embedding model. Default: \code{"text-embedding-ada-002"}.}
 
@@ -15,11 +15,11 @@ create_embedding(input, model = "text-embedding-ada-002", ...)
 such as \code{dimensions} or \code{encoding_format}.}
 }
 \value{
-A named list with \code{$data[[i]]$embedding} containing the
+A named list with \verb{$data[[i]]$embedding} containing the
 numeric embedding vectors.
 }
 \description{
-Shortcut that automatically creates an \code{\link{OpenAI}} client and calls
+Shortcut that automatically creates an \code{OpenAI} client and calls
 \code{client$embeddings$create()}. The API key is read from the
 \code{OPENAI_API_KEY} environment variable.
 }

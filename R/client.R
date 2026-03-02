@@ -8,116 +8,116 @@
 OpenAI <- R6Class(
   "OpenAI",
   public = list(
-    #' @field api_key OpenAI API key
+    # Field: api_key OpenAI API key
     api_key = NULL,
 
-    #' @field base_url Base URL for API requests
+    # Field: base_url Base URL for API requests
     base_url = NULL,
 
-    #' @field organization Organization ID (optional)
+    # Field: organization Organization ID (optional)
     organization = NULL,
 
-    #' @field project Project ID (optional)
+    # Field: project Project ID (optional)
     project = NULL,
 
-    #' @field timeout Request timeout in seconds
+    # Field: timeout Request timeout in seconds
     timeout = NULL,
 
-    #' @field max_retries Maximum number of retries
+    # Field: max_retries Maximum number of retries
     max_retries = NULL,
 
-    #' @field chat Chat completions client
+    # Field: chat Chat completions client
     chat = NULL,
 
-    #' @field embeddings Embeddings client
+    # Field: embeddings Embeddings client
     embeddings = NULL,
 
-    #' @field images Images client
+    # Field: images Images client
     images = NULL,
 
-    #' @field audio Audio client
+    # Field: audio Audio client
     audio = NULL,
 
-    #' @field models Models client
+    # Field: models Models client
     models = NULL,
 
-    #' @field fine_tuning Fine-tuning client
+    # Field: fine_tuning Fine-tuning client
     fine_tuning = NULL,
 
-    #' @field files Files client
+    # Field: files Files client
     files = NULL,
 
-    #' @field moderations Moderations client
+    # Field: moderations Moderations client
     moderations = NULL,
 
-    #' @field completions Completions client (legacy)
+    # Field: completions Completions client (legacy)
     completions = NULL,
 
-    #' @field batch Batch client
+    # Field: batch Batch client
     batch = NULL,
 
-    #' @field uploads Uploads client
+    # Field: uploads Uploads client
     uploads = NULL,
 
-    #' @field assistants Assistants client (beta)
+    # Field: assistants Assistants client (beta)
     assistants = NULL,
 
-    #' @field threads Threads client (beta)
+    # Field: threads Threads client (beta)
     threads = NULL,
 
-    #' @field vector_stores Vector stores client (beta)
+    # Field: vector_stores Vector stores client (beta)
     vector_stores = NULL,
 
-    #' @field responses Responses client
+    # Field: responses Responses client
     responses = NULL,
 
-    #' @description
-    #' Create and initialize an OpenAI API client. This is the main entry point
-    #' for all API interactions. All sub-clients (chat, embeddings, images, etc.)
-    #' are initialized automatically.
-    #'
-    #' @param api_key Character. Your OpenAI API key (starts with \code{"sk-"}).
-    #'   If \code{NULL}, reads from the \code{OPENAI_API_KEY} environment variable.
-    #'   \strong{Recommended}: store key in \code{~/.Renviron} as
-    #'   \code{OPENAI_API_KEY=sk-...} rather than hardcoding in scripts.
-    #'   Default: \code{NULL}.
-    #'
-    #' @param base_url Character. Base URL for all API requests.
-    #'   Change this to use OpenAI-compatible third-party APIs
-    #'   (e.g. ModelScope, Azure OpenAI, local LLM servers).
-    #'   Default: \code{"https://api.openai.com/v1"}.
-    #'
-    #' @param organization Character. OpenAI Organization ID (format: \code{"org-xxx"}).
-    #'   If \code{NULL}, reads from \code{OPENAI_ORG_ID} env var.
-    #'   Only needed if your account belongs to multiple organizations.
-    #'   Default: \code{NULL}.
-    #'
-    #' @param project Character. OpenAI Project ID (format: \code{"proj-xxx"}).
-    #'   If \code{NULL}, reads from \code{OPENAI_PROJECT_ID} env var.
-    #'   Default: \code{NULL}.
-    #'
-    #' @param timeout Numeric. HTTP request timeout in seconds.
-    #'   Increase for long-running requests (large outputs, slow networks).
-    #'   Default: \code{600}.
-    #'
-    #' @param max_retries Integer. Maximum number of automatic retries on
-    #'   transient errors (HTTP 408, 429, 500, 502, 503, 504).
-    #'   Uses exponential backoff between retries. Set to \code{0} to disable.
-    #'   Default: \code{2}.
-    #'
-    #' @return An \code{OpenAI} R6 object with the following sub-client fields:
-    #'   \describe{
-    #'     \item{\code{$chat}}{ChatClient — Chat Completions API}
-    #'     \item{\code{$embeddings}}{EmbeddingsClient — Text embedding vectors}
-    #'     \item{\code{$images}}{ImagesClient — DALL-E image generation}
-    #'     \item{\code{$audio}}{AudioClient — Whisper transcription / TTS}
-    #'     \item{\code{$models}}{ModelsClient — List and manage models}
-    #'     \item{\code{$fine_tuning}}{FineTuningClient — Fine-tune jobs}
-    #'     \item{\code{$files}}{FilesClient — Upload and manage files}
-    #'     \item{\code{$moderations}}{ModerationsClient — Content safety}
-    #'     \item{\code{$completions}}{CompletionsClient — Legacy text completions}
-    #'     \item{\code{$responses}}{ResponsesClient — New Responses API}
-    #'   }
+    # @description
+    # Create and initialize an OpenAI API client. This is the main entry point
+    # for all API interactions. All sub-clients (chat, embeddings, images, etc.)
+    # are initialized automatically.
+    #
+    # @param api_key Character. Your OpenAI API key (starts with "sk-").
+    #   If NULL, reads from the OPENAI_API_KEY environment variable.
+    #   \strong{Recommended}: store key in ~/.Renviron as
+    #   OPENAI_API_KEY=sk-... rather than hardcoding in scripts.
+    #   Default: NULL.
+    #
+    # @param base_url Character. Base URL for all API requests.
+    #   Change this to use OpenAI-compatible third-party APIs
+    #   (e.g. ModelScope, Azure OpenAI, local LLM servers).
+    #   Default: "https://api.openai.com/v1".
+    #
+    # @param organization Character. OpenAI Organization ID (format: "org-xxx").
+    #   If NULL, reads from OPENAI_ORG_ID env var.
+    #   Only needed if your account belongs to multiple organizations.
+    #   Default: NULL.
+    #
+    # @param project Character. OpenAI Project ID (format: "proj-xxx").
+    #   If NULL, reads from OPENAI_PROJECT_ID env var.
+    #   Default: NULL.
+    #
+    # @param timeout Numeric. HTTP request timeout in seconds.
+    #   Increase for long-running requests (large outputs, slow networks).
+    #   Default: 600.
+    #
+    # @param max_retries Integer. Maximum number of automatic retries on
+    #   transient errors (HTTP 408, 429, 500, 502, 503, 504).
+    #   Uses exponential backoff between retries. Set to 0 to disable.
+    #   Default: 2.
+    #
+    # @return An OpenAI R6 object with the following sub-client fields:
+    #   \describe{
+    #     \item{$chat}{ChatClient — Chat Completions API}
+    #     \item{$embeddings}{EmbeddingsClient — Text embedding vectors}
+    #     \item{$images}{ImagesClient — DALL-E image generation}
+    #     \item{$audio}{AudioClient — Whisper transcription / TTS}
+    #     \item{$models}{ModelsClient — List and manage models}
+    #     \item{$fine_tuning}{FineTuningClient — Fine-tune jobs}
+    #     \item{$files}{FilesClient — Upload and manage files}
+    #     \item{$moderations}{ModerationsClient — Content safety}
+    #     \item{$completions}{CompletionsClient — Legacy text completions}
+    #     \item{$responses}{ResponsesClient — New Responses API}
+    #   }
     initialize = function(api_key = NULL, base_url = NULL,
                           organization = NULL, project = NULL,
                           timeout = 600, max_retries = 2) {
@@ -154,10 +154,10 @@ OpenAI <- R6Class(
       self$responses <- ResponsesClient$new(self)
     },
 
-    #' Build common headers for API requests
-    #'
-    #' @return Named list of headers
-    #' @keywords internal
+    # Build common headers for API requests
+    #
+    # @return Named list of headers
+    # @keywords internal
     build_headers = function() {
       headers <- list(
         "Authorization" = paste("Bearer", self$api_key),
@@ -175,16 +175,16 @@ OpenAI <- R6Class(
       headers
     },
 
-    #' Make HTTP request to OpenAI API
-    #'
-    #' @param method HTTP method (GET, POST, DELETE)
-    #' @param path API path (e.g., "/chat/completions")
-    #' @param body Request body (list). Optional.
-    #' @param query Query parameters (list). Optional.
-    #' @param stream Whether to stream response. Default: FALSE
-    #' @param callback Function to call for each stream chunk (optional)
-    #' @return Parsed JSON response or stream callback
-    #' @keywords internal
+    # Make HTTP request to OpenAI API
+    #
+    # @param method HTTP method (GET, POST, DELETE)
+    # @param path API path (e.g., "/chat/completions")
+    # @param body Request body (list). Optional.
+    # @param query Query parameters (list). Optional.
+    # @param stream Whether to stream response. Default: FALSE
+    # @param callback Function to call for each stream chunk (optional)
+    # @return Parsed JSON response or stream callback
+    # @keywords internal
     request = function(method, path, body = NULL, query = NULL, stream = FALSE, callback = NULL) {
       url <- paste0(self$base_url, path)
 
@@ -234,13 +234,13 @@ OpenAI <- R6Class(
       )
     },
 
-    #' Make multipart form data request to OpenAI API
-    #'
-    #' @param method HTTP method
-    #' @param path API path
-    #' @param ... Named arguments for multipart form data
-    #' @return Parsed JSON response
-    #' @keywords internal
+    # Make multipart form data request to OpenAI API
+    #
+    # @param method HTTP method
+    # @param path API path
+    # @param ... Named arguments for multipart form data
+    # @return Parsed JSON response
+    # @keywords internal
     request_multipart = function(method, path, ...) {
       url <- paste0(self$base_url, path)
 
@@ -278,13 +278,13 @@ OpenAI <- R6Class(
       )
     },
 
-    #' Make raw (binary) request to OpenAI API
-    #'
-    #' @param method HTTP method
-    #' @param path API path
-    #' @param body Request body
-    #' @return Raw response body
-    #' @keywords internal
+    # Make raw (binary) request to OpenAI API
+    #
+    # @param method HTTP method
+    # @param path API path
+    # @param body Request body
+    # @return Raw response body
+    # @keywords internal
     request_raw = function(method, path, body = NULL) {
       url <- paste0(self$base_url, path)
 

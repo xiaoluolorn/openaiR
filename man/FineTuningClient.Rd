@@ -6,14 +6,6 @@
 \description{
 Client for OpenAI Fine-tuning API.
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{jobs}}{Fine-tuning jobs interface
-Initialize fine-tuning client}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -29,13 +21,6 @@ Initialize fine-tuning client}
 \if{html}{\out{<div class="r">}}\preformatted{FineTuningClient$new(parent)}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{parent}}{Parent OpenAI client}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-FineTuningClient-clone"></a>}}

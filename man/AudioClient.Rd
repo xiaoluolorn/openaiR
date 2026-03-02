@@ -6,18 +6,6 @@
 \description{
 Client for OpenAI Audio API (transcription, translation, speech).
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{transcriptions}}{Audio transcription interface}
-
-\item{\code{translations}}{Audio translation interface}
-
-\item{\code{speech}}{Text-to-speech interface
-Initialize audio client}
-}
-\if{html}{\out{</div>}}
-}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -33,13 +21,6 @@ Initialize audio client}
 \if{html}{\out{<div class="r">}}\preformatted{AudioClient$new(parent)}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{parent}}{Parent OpenAI client}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AudioClient-clone"></a>}}

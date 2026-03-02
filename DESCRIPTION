@@ -16,12 +16,13 @@ Imports:
     httr2,
     jsonlite,
     rlang,
-    glue,
-    tools
+    tools,
+    grDevices
 Suggests: 
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    ggplot2
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Encoding: UTF-8

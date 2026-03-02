@@ -8,7 +8,6 @@
 *.rda
 *.Rcheck/
 *_Rcheck/
-.Rbuildignore
 *.tar.gz
 *.tar.xz
 *.tgz
@@ -47,7 +46,6 @@ cache/
 
 # Build artifacts
 inst/doc/
-man/*.Rd
 
 # Coverage
 covr/
@@ -58,3 +56,5 @@ covr/
 # Local configuration
 config.local.yml
 settings.local.yml
+/doc/
+/Meta/

@@ -7,6 +7,8 @@ test_that("Fine-tuning client initializes", {
 })
 
 test_that("Fine-tuning jobs create accepts required parameters", {
+  skip_on_cran()
+  skip_if(Sys.getenv("OPENAI_API_KEY") == "" || Sys.getenv("OPENAI_API_KEY") == "test-key", "No valid API key")
   client <- OpenAI$new(api_key = "test-key")
   
   expect_error(
@@ -19,6 +21,8 @@ test_that("Fine-tuning jobs create accepts required parameters", {
 })
 
 test_that("Fine-tuning jobs create accepts optional parameters", {
+  skip_on_cran()
+  skip_if(Sys.getenv("OPENAI_API_KEY") == "" || Sys.getenv("OPENAI_API_KEY") == "test-key", "No valid API key")
   client <- OpenAI$new(api_key = "test-key")
   
   expect_error(

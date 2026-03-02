@@ -7,12 +7,7 @@
 #' @keywords internal
 NULL
 
-#' Helper function to check NULL
-#'
-#' @param a Value to check
-#' @param b Default value
-#' @return a if not NULL, otherwise b
-#' @keywords internal
+# Internal NULL-coalescing operator (not exported)
 `%||%` <- function(a, b) if (is.null(a)) b else a
 
 #' Base OpenAI Error
@@ -162,21 +157,21 @@ handle_stream_response <- function(req, callback = NULL) {
 StreamIterator <- R6::R6Class(
   "StreamIterator",
   public = list(
-    #' @field chunks List of all chunks
+    # Field: chunks List of all chunks
     chunks = NULL,
 
-    #' @field current_index Current position in iteration
+    # Field: current_index Current position in iteration
     current_index = 0,
 
-    #' Initialize stream iterator
-    #' @param chunks List of parsed SSE chunks
+    # Initialize stream iterator
+    # @param chunks List of parsed SSE chunks
     initialize = function(chunks) {
       self$chunks <- chunks
       self$current_index <- 0
     },
 
-    #' Get next chunk
-    #' @return Next chunk or NULL if end of stream
+    # Get next chunk
+    # @return Next chunk or NULL if end of stream
     next_chunk = function() {
       self$current_index <- self$current_index + 1
       if (self$current_index > length(self$chunks)) {
@@ -185,25 +180,25 @@ StreamIterator <- R6::R6Class(
       self$chunks[[self$current_index]]
     },
 
-    #' Check if there are more chunks
-    #' @return TRUE if more chunks available
+    # Check if there are more chunks
+    # @return TRUE if more chunks available
     has_more = function() {
       self$current_index < length(self$chunks)
     },
 
-    #' Reset iterator to beginning
+    # Reset iterator to beginning
     reset = function() {
       self$current_index <- 0
     },
 
-    #' Get all chunks as list
-    #' @return List of all chunks
+    # Get all chunks as list
+    # @return List of all chunks
     as_list = function() {
       self$chunks
     },
 
-    #' Get full text by concatenating all content deltas
-    #' @return Complete text content
+    # Get full text by concatenating all content deltas
+    # @return Complete text content
     get_full_text = function() {
       full_text <- ""
       for (chunk in self$chunks) {

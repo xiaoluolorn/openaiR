@@ -6,8 +6,10 @@ test_that("Chat completions client initializes", {
 })
 
 test_that("Chat completions create accepts required parameters", {
+  skip_on_cran()
+  skip_if(Sys.getenv("OPENAI_API_KEY") == "" || Sys.getenv("OPENAI_API_KEY") == "test-key", "No valid API key")
   client <- OpenAI$new(api_key = "test-key")
-  
+
   # Mock the request method to avoid actual API call
   mock_response <- list(
     id = "chatcmpl-test",
@@ -23,7 +25,7 @@ test_that("Chat completions create accepts required parameters", {
     ),
     usage = list(prompt_tokens = 10, completion_tokens = 20, total_tokens = 30)
   )
-  
+
   # Test that the method accepts the parameters without error
   # (We can't test actual API calls without a real key)
   expect_error(
@@ -38,8 +40,10 @@ test_that("Chat completions create accepts required parameters", {
 })
 
 test_that("Chat completions accepts optional parameters", {
+  skip_on_cran()
+  skip_if(Sys.getenv("OPENAI_API_KEY") == "" || Sys.getenv("OPENAI_API_KEY") == "test-key", "No valid API key")
   client <- OpenAI$new(api_key = "test-key")
-  
+
   # Test with various optional parameters
   expect_error(
     client$chat$completions$create(
@@ -70,8 +74,10 @@ test_that("create_chat_completion convenience function works", {
 })
 
 test_that("Chat completions handles response_format parameter", {
+  skip_on_cran()
+  skip_if(Sys.getenv("OPENAI_API_KEY") == "" || Sys.getenv("OPENAI_API_KEY") == "test-key", "No valid API key")
   client <- OpenAI$new(api_key = "test-key")
-  
+
   expect_error(
     client$chat$completions$create(
       messages = list(list(role = "user", content = "Test")),
@@ -83,12 +89,14 @@ test_that("Chat completions handles response_format parameter", {
 })
 
 test_that("Chat completions handles tools parameter", {
+  skip_on_cran()
+  skip_if(Sys.getenv("OPENAI_API_KEY") == "" || Sys.getenv("OPENAI_API_KEY") == "test-key", "No valid API key")
   client <- OpenAI$new(api_key = "test-key")
-  
+
   tools <- list(
     list(
       type = "function",
-      function = list(
+      `function` = list(
         name = "get_weather",
         description = "Get current weather",
         parameters = list(
@@ -101,7 +109,7 @@ test_that("Chat completions handles tools parameter", {
       )
     )
   )
-  
+
   expect_error(
     client$chat$completions$create(
       messages = list(list(role = "user", content = "What's the weather?")),

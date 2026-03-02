@@ -9,27 +9,27 @@ ThreadsClient <- R6::R6Class(
   public = list(
     client = NULL,
     
-    #' @field runs Runs sub-client
+    # Field: runs Runs sub-client
     runs = NULL,
     
-    #' @field messages Messages sub-client
+    # Field: messages Messages sub-client
     messages = NULL,
     
-    #' Initialize threads client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize threads client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
       self$runs <- RunsClient$new(parent)
       self$messages <- MessagesClient$new(parent)
     },
     
-    #' Create a thread
-    #'
-    #' @param messages List of initial messages
-    #' @param tool_resources Resources for tools
-    #' @param metadata Metadata object
-    #' @return Thread object
+    # Create a thread
+    #
+    # @param messages List of initial messages
+    # @param tool_resources Resources for tools
+    # @param metadata Metadata object
+    # @return Thread object
     create = function(messages = NULL, tool_resources = NULL, metadata = NULL) {
       body <- list()
       
@@ -40,44 +40,44 @@ ThreadsClient <- R6::R6Class(
       self$client$request("POST", "/threads", body = body)
     },
     
-    #' Retrieve a thread
-    #'
-    #' @param thread_id Thread ID
-    #' @return Thread object
+    # Retrieve a thread
+    #
+    # @param thread_id Thread ID
+    # @return Thread object
     retrieve = function(thread_id) {
       self$client$request("GET", paste0("/threads/", thread_id))
     },
     
-    #' Update a thread
-    #'
-    #' @param thread_id Thread ID
-    #' @param ... Fields to update
-    #' @return Updated thread
+    # Update a thread
+    #
+    # @param thread_id Thread ID
+    # @param ... Fields to update
+    # @return Updated thread
     update = function(thread_id, ...) {
       body <- list(...)
       self$client$request("POST", paste0("/threads/", thread_id), body = body)
     },
     
-    #' Delete a thread
-    #'
-    #' @param thread_id Thread ID
-    #' @return Deletion status
+    # Delete a thread
+    #
+    # @param thread_id Thread ID
+    # @return Deletion status
     delete = function(thread_id) {
       self$client$request("DELETE", paste0("/threads/", thread_id))
     },
     
-    #' Create a thread and run it
-    #'
-    #' @param assistant_id Assistant ID
-    #' @param thread Thread configuration or NULL to create new
-    #' @param model Override model
-    #' @param instructions Override instructions
-    #' @param tools Override tools
-    #' @param tool_resources Resources for tools
-    #' @param metadata Metadata
-    #' @param stream Whether to stream
-    #' @param callback Callback for streaming
-    #' @return Run object or stream
+    # Create a thread and run it
+    #
+    # @param assistant_id Assistant ID
+    # @param thread Thread configuration or NULL to create new
+    # @param model Override model
+    # @param instructions Override instructions
+    # @param tools Override tools
+    # @param tool_resources Resources for tools
+    # @param metadata Metadata
+    # @param stream Whether to stream
+    # @param callback Callback for streaming
+    # @return Run object or stream
     create_and_run = function(assistant_id,
                                thread = NULL,
                                model = NULL,
@@ -118,38 +118,38 @@ RunsClient <- R6::R6Class(
   public = list(
     client = NULL,
     
-    #' @field steps Steps sub-client
+    # Field: steps Steps sub-client
     steps = NULL,
     
-    #' Initialize runs client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize runs client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
       self$steps <- RunStepsClient$new(parent)
     },
     
-    #' Create a run
-    #'
-    #' @param thread_id Thread ID
-    #' @param assistant_id Assistant ID
-    #' @param model Override model
-    #' @param instructions Override instructions
-    #' @param additional_instructions Additional instructions
-    #' @param additional_messages Additional messages
-    #' @param tools Override tools
-    #' @param metadata Metadata
-    #' @param temperature Temperature
-    #' @param top_p Top p
-    #' @param max_prompt_tokens Max prompt tokens
-    #' @param max_completion_tokens Max completion tokens
-    #' @param truncation_strategy Truncation strategy
-    #' @param tool_choice Tool choice
-    #' @param parallel_tool_calls Allow parallel tool calls
-    #' @param response_format Response format
-    #' @param stream Stream the run
-    #' @param callback Callback for streaming
-    #' @return Run object
+    # Create a run
+    #
+    # @param thread_id Thread ID
+    # @param assistant_id Assistant ID
+    # @param model Override model
+    # @param instructions Override instructions
+    # @param additional_instructions Additional instructions
+    # @param additional_messages Additional messages
+    # @param tools Override tools
+    # @param metadata Metadata
+    # @param temperature Temperature
+    # @param top_p Top p
+    # @param max_prompt_tokens Max prompt tokens
+    # @param max_completion_tokens Max completion tokens
+    # @param truncation_strategy Truncation strategy
+    # @param tool_choice Tool choice
+    # @param parallel_tool_calls Allow parallel tool calls
+    # @param response_format Response format
+    # @param stream Stream the run
+    # @param callback Callback for streaming
+    # @return Run object
     create = function(thread_id,
                       assistant_id,
                       model = NULL,
@@ -197,14 +197,14 @@ RunsClient <- R6::R6Class(
       )
     },
     
-    #' List runs
-    #'
-    #' @param thread_id Thread ID
-    #' @param limit Number of runs
-    #' @param order Sort order
-    #' @param after Cursor
-    #' @param before Cursor
-    #' @return List of runs
+    # List runs
+    #
+    # @param thread_id Thread ID
+    # @param limit Number of runs
+    # @param order Sort order
+    # @param after Cursor
+    # @param before Cursor
+    # @return List of runs
     list = function(thread_id, limit = NULL, order = NULL, after = NULL, before = NULL) {
       query <- list()
       if (!is.null(limit)) query$limit <- limit
@@ -215,44 +215,44 @@ RunsClient <- R6::R6Class(
       self$client$request("GET", paste0("/threads/", thread_id, "/runs"), query = query)
     },
     
-    #' Retrieve a run
-    #'
-    #' @param thread_id Thread ID
-    #' @param run_id Run ID
-    #' @return Run object
+    # Retrieve a run
+    #
+    # @param thread_id Thread ID
+    # @param run_id Run ID
+    # @return Run object
     retrieve = function(thread_id, run_id) {
       self$client$request("GET", paste0("/threads/", thread_id, "/runs/", run_id))
     },
     
-    #' Update a run
-    #'
-    #' @param thread_id Thread ID
-    #' @param run_id Run ID
-    #' @param metadata Metadata to update
-    #' @return Updated run
+    # Update a run
+    #
+    # @param thread_id Thread ID
+    # @param run_id Run ID
+    # @param metadata Metadata to update
+    # @return Updated run
     update = function(thread_id, run_id, metadata = NULL) {
       body <- list()
       if (!is.null(metadata)) body$metadata <- metadata
       self$client$request("POST", paste0("/threads/", thread_id, "/runs/", run_id), body = body)
     },
     
-    #' Cancel a run
-    #'
-    #' @param thread_id Thread ID
-    #' @param run_id Run ID
-    #' @return Cancelled run
+    # Cancel a run
+    #
+    # @param thread_id Thread ID
+    # @param run_id Run ID
+    # @return Cancelled run
     cancel = function(thread_id, run_id) {
       self$client$request("POST", paste0("/threads/", thread_id, "/runs/", run_id, "/cancel"))
     },
     
-    #' Submit tool outputs
-    #'
-    #' @param thread_id Thread ID
-    #' @param run_id Run ID
-    #' @param tool_outputs List of tool outputs
-    #' @param stream Stream the response
-    #' @param callback Callback for streaming
-    #' @return Run object
+    # Submit tool outputs
+    #
+    # @param thread_id Thread ID
+    # @param run_id Run ID
+    # @param tool_outputs List of tool outputs
+    # @param stream Stream the response
+    # @param callback Callback for streaming
+    # @return Run object
     submit_tool_outputs = function(thread_id, run_id, tool_outputs, stream = NULL, callback = NULL) {
       body <- list(tool_outputs = tool_outputs)
       
@@ -279,22 +279,22 @@ RunStepsClient <- R6::R6Class(
   public = list(
     client = NULL,
     
-    #' Initialize run steps client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize run steps client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
     },
     
-    #' List run steps
-    #'
-    #' @param thread_id Thread ID
-    #' @param run_id Run ID
-    #' @param limit Number of steps
-    #' @param order Sort order
-    #' @param after Cursor
-    #' @param before Cursor
-    #' @return List of run steps
+    # List run steps
+    #
+    # @param thread_id Thread ID
+    # @param run_id Run ID
+    # @param limit Number of steps
+    # @param order Sort order
+    # @param after Cursor
+    # @param before Cursor
+    # @return List of run steps
     list = function(thread_id, run_id, limit = NULL, order = NULL, after = NULL, before = NULL) {
       query <- list()
       if (!is.null(limit)) query$limit <- limit
@@ -305,12 +305,12 @@ RunStepsClient <- R6::R6Class(
       self$client$request("GET", paste0("/threads/", thread_id, "/runs/", run_id, "/steps"), query = query)
     },
     
-    #' Retrieve a run step
-    #'
-    #' @param thread_id Thread ID
-    #' @param run_id Run ID
-    #' @param step_id Step ID
-    #' @return Run step object
+    # Retrieve a run step
+    #
+    # @param thread_id Thread ID
+    # @param run_id Run ID
+    # @param step_id Step ID
+    # @return Run step object
     retrieve = function(thread_id, run_id, step_id) {
       self$client$request("GET", paste0("/threads/", thread_id, "/runs/", run_id, "/steps/", step_id))
     }
@@ -325,21 +325,21 @@ MessagesClient <- R6::R6Class(
   public = list(
     client = NULL,
     
-    #' Initialize messages client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize messages client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
     },
     
-    #' Create a message
-    #'
-    #' @param thread_id Thread ID
-    #' @param role Message role: "user" or "assistant"
-    #' @param content Message content (string or list for multimodal)
-    #' @param attachments List of attachments
-    #' @param metadata Metadata
-    #' @return Message object
+    # Create a message
+    #
+    # @param thread_id Thread ID
+    # @param role Message role: "user" or "assistant"
+    # @param content Message content (string or list for multimodal)
+    # @param attachments List of attachments
+    # @param metadata Metadata
+    # @return Message object
     create = function(thread_id, role, content, attachments = NULL, metadata = NULL) {
       body <- list(
         role = role,
@@ -352,15 +352,15 @@ MessagesClient <- R6::R6Class(
       self$client$request("POST", paste0("/threads/", thread_id, "/messages"), body = body)
     },
     
-    #' List messages
-    #'
-    #' @param thread_id Thread ID
-    #' @param limit Number of messages
-    #' @param order Sort order
-    #' @param after Cursor
-    #' @param before Cursor
-    #' @param run_id Filter by run ID
-    #' @return List of messages
+    # List messages
+    #
+    # @param thread_id Thread ID
+    # @param limit Number of messages
+    # @param order Sort order
+    # @param after Cursor
+    # @param before Cursor
+    # @param run_id Filter by run ID
+    # @return List of messages
     list = function(thread_id, limit = NULL, order = NULL, after = NULL, before = NULL, run_id = NULL) {
       query <- list()
       if (!is.null(limit)) query$limit <- limit
@@ -372,32 +372,32 @@ MessagesClient <- R6::R6Class(
       self$client$request("GET", paste0("/threads/", thread_id, "/messages"), query = query)
     },
     
-    #' Retrieve a message
-    #'
-    #' @param thread_id Thread ID
-    #' @param message_id Message ID
-    #' @return Message object
+    # Retrieve a message
+    #
+    # @param thread_id Thread ID
+    # @param message_id Message ID
+    # @return Message object
     retrieve = function(thread_id, message_id) {
       self$client$request("GET", paste0("/threads/", thread_id, "/messages/", message_id))
     },
     
-    #' Update a message
-    #'
-    #' @param thread_id Thread ID
-    #' @param message_id Message ID
-    #' @param metadata Metadata to update
-    #' @return Updated message
+    # Update a message
+    #
+    # @param thread_id Thread ID
+    # @param message_id Message ID
+    # @param metadata Metadata to update
+    # @return Updated message
     update = function(thread_id, message_id, metadata = NULL) {
       body <- list()
       if (!is.null(metadata)) body$metadata <- metadata
       self$client$request("POST", paste0("/threads/", thread_id, "/messages/", message_id), body = body)
     },
     
-    #' Delete a message
-    #'
-    #' @param thread_id Thread ID
-    #' @param message_id Message ID
-    #' @return Deletion status
+    # Delete a message
+    #
+    # @param thread_id Thread ID
+    # @param message_id Message ID
+    # @return Deletion status
     delete = function(thread_id, message_id) {
       self$client$request("DELETE", paste0("/threads/", thread_id, "/messages/", message_id))
     }

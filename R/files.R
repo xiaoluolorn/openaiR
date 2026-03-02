@@ -9,18 +9,18 @@ FilesClient <- R6::R6Class(
   public = list(
     client = NULL,
 
-    #' Initialize files client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize files client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
     },
 
-    #' Upload a file
-    #'
-    #' @param file File path or raw content
-    #' @param purpose Purpose of the file: "assistants", "batch", "fine-tune", "vision"
-    #' @return File object
+    # Upload a file
+    #
+    # @param file File path or raw content
+    # @param purpose Purpose of the file: "assistants", "batch", "fine-tune", "vision"
+    # @return File object
     create = function(file, purpose) {
       # Determine file parameter
       if (is.character(file) && file.exists(file)) {
@@ -38,13 +38,13 @@ FilesClient <- R6::R6Class(
       )
     },
 
-    #' List files
-    #'
-    #' @param purpose Filter by purpose
-    #' @param limit Number of files to return (max 10000)
-    #' @param after Cursor for pagination
-    #' @param order Sort order: "asc" or "desc"
-    #' @return List of files
+    # List files
+    #
+    # @param purpose Filter by purpose
+    # @param limit Number of files to return (max 10000)
+    # @param after Cursor for pagination
+    # @param order Sort order: "asc" or "desc"
+    # @return List of files
     list = function(purpose = NULL, limit = NULL, after = NULL, order = NULL) {
       query <- list()
       if (!is.null(purpose)) query$purpose <- purpose
@@ -55,36 +55,36 @@ FilesClient <- R6::R6Class(
       self$client$request("GET", "/files", query = query)
     },
 
-    #' Retrieve a file
-    #'
-    #' @param file_id File ID
-    #' @return File object
+    # Retrieve a file
+    #
+    # @param file_id File ID
+    # @return File object
     retrieve = function(file_id) {
       self$client$request("GET", paste0("/files/", file_id))
     },
 
-    #' Delete a file
-    #'
-    #' @param file_id File ID
-    #' @return Deletion status
+    # Delete a file
+    #
+    # @param file_id File ID
+    # @return Deletion status
     delete = function(file_id) {
       self$client$request("DELETE", paste0("/files/", file_id))
     },
 
-    #' Retrieve file content
-    #'
-    #' @param file_id File ID
-    #' @return Raw file content
+    # Retrieve file content
+    #
+    # @param file_id File ID
+    # @return Raw file content
     content = function(file_id) {
       self$client$request_raw("GET", paste0("/files/", file_id, "/content"))
     },
 
-    #' Wait for file processing
-    #'
-    #' @param file_id File ID
-    #' @param timeout Maximum wait time in seconds
-    #' @param poll_interval Seconds between polls
-    #' @return File object when processed
+    # Wait for file processing
+    #
+    # @param file_id File ID
+    # @param timeout Maximum wait time in seconds
+    # @param poll_interval Seconds between polls
+    # @return File object when processed
     wait_for_processing = function(file_id, timeout = 300, poll_interval = 5) {
       start_time <- Sys.time()
 

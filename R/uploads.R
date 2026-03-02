@@ -9,20 +9,20 @@ UploadsClient <- R6::R6Class(
   public = list(
     client = NULL,
 
-    #' Initialize uploads client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize uploads client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
     },
 
-    #' Create an upload
-    #'
-    #' @param purpose Upload purpose: "assistants", "batch", "fine-tune"
-    #' @param filename Original filename
-    #' @param bytes Total file size in bytes
-    #' @param mime_type MIME type
-    #' @return Upload object
+    # Create an upload
+    #
+    # @param purpose Upload purpose: "assistants", "batch", "fine-tune"
+    # @param filename Original filename
+    # @param bytes Total file size in bytes
+    # @param mime_type MIME type
+    # @return Upload object
     create = function(purpose, filename, bytes, mime_type = NULL) {
       body <- list(
         purpose = purpose,
@@ -35,11 +35,11 @@ UploadsClient <- R6::R6Class(
       self$client$request("POST", "/uploads", body = body)
     },
 
-    #' Add a part to an upload
-    #'
-    #' @param upload_id Upload ID
-    #' @param data Raw data for this part
-    #' @return Upload part object
+    # Add a part to an upload
+    #
+    # @param upload_id Upload ID
+    # @param data Raw data for this part
+    # @return Upload part object
     add_part = function(upload_id, data) {
       self$client$request_multipart(
         "POST",
@@ -48,12 +48,12 @@ UploadsClient <- R6::R6Class(
       )
     },
 
-    #' Complete an upload
-    #'
-    #' @param upload_id Upload ID
-    #' @param part_ids List of part IDs
-    #' @param md5 MD5 checksum of file (optional)
-    #' @return File object
+    # Complete an upload
+    #
+    # @param upload_id Upload ID
+    # @param part_ids List of part IDs
+    # @param md5 MD5 checksum of file (optional)
+    # @return File object
     complete = function(upload_id, part_ids, md5 = NULL) {
       body <- list(
         part_ids = part_ids
@@ -64,10 +64,10 @@ UploadsClient <- R6::R6Class(
       self$client$request("POST", paste0("/uploads/", upload_id, "/complete"), body = body)
     },
 
-    #' Cancel an upload
-    #'
-    #' @param upload_id Upload ID
-    #' @return Cancelled upload
+    # Cancel an upload
+    #
+    # @param upload_id Upload ID
+    # @return Cancelled upload
     cancel = function(upload_id) {
       self$client$request("POST", paste0("/uploads/", upload_id, "/cancel"))
     }

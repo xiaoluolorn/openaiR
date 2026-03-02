@@ -9,37 +9,37 @@ ResponsesClient <- R6::R6Class(
   public = list(
     client = NULL,
     
-    #' Initialize responses client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize responses client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
     },
     
-    #' Create a response
-    #'
-    #' @param model Model ID (e.g., "gpt-4o", "gpt-4o-mini")
-    #' @param input Input text, messages, or response ID for continuation
-    #' @param instructions System instructions
-    #' @param previous_response_id Previous response ID for conversation continuity
-    #' @param tools List of tools
-    #' @param tool_choice Tool choice strategy
-    #' @param parallel_tool_calls Allow parallel tool calls
-    #' @param max_output_tokens Maximum output tokens
-    #' @param max_completion_tokens Maximum completion tokens (legacy)
-    #' @param temperature Sampling temperature
-    #' @param top_p Nucleus sampling
-    #' @param truncation Truncation strategy
-    #' @param metadata Metadata
-    #' @param reasoning Reasoning configuration
-    #' @param service_tier Service tier: "auto", "default", "flex", "scale"
-    #' @param prompt_cache_key Cache key
-    #' @param prompt_cache_retention Cache retention
-    #' @param include Additional output data
-    #' @param store Store the response
-    #' @param stream Stream the response
-    #' @param callback Callback for streaming
-    #' @return Response object
+    # Create a response
+    #
+    # @param model Model ID (e.g., "gpt-4o", "gpt-4o-mini")
+    # @param input Input text, messages, or response ID for continuation
+    # @param instructions System instructions
+    # @param previous_response_id Previous response ID for conversation continuity
+    # @param tools List of tools
+    # @param tool_choice Tool choice strategy
+    # @param parallel_tool_calls Allow parallel tool calls
+    # @param max_output_tokens Maximum output tokens
+    # @param max_completion_tokens Maximum completion tokens (legacy)
+    # @param temperature Sampling temperature
+    # @param top_p Nucleus sampling
+    # @param truncation Truncation strategy
+    # @param metadata Metadata
+    # @param reasoning Reasoning configuration
+    # @param service_tier Service tier: "auto", "default", "flex", "scale"
+    # @param prompt_cache_key Cache key
+    # @param prompt_cache_retention Cache retention
+    # @param include Additional output data
+    # @param store Store the response
+    # @param stream Stream the response
+    # @param callback Callback for streaming
+    # @return Response object
     create = function(model,
                       input,
                       instructions = NULL,
@@ -96,36 +96,36 @@ ResponsesClient <- R6::R6Class(
       )
     },
     
-    #' Retrieve a response
-    #'
-    #' @param response_id Response ID
-    #' @return Response object
+    # Retrieve a response
+    #
+    # @param response_id Response ID
+    # @return Response object
     retrieve = function(response_id) {
       self$client$request("GET", paste0("/responses/", response_id))
     },
     
-    #' Delete a response
-    #'
-    #' @param response_id Response ID
-    #' @return Deletion status
+    # Delete a response
+    #
+    # @param response_id Response ID
+    # @return Deletion status
     delete = function(response_id) {
       self$client$request("DELETE", paste0("/responses/", response_id))
     },
     
-    #' Cancel a response
-    #'
-    #' @param response_id Response ID
-    #' @return Cancelled response
+    # Cancel a response
+    #
+    # @param response_id Response ID
+    # @return Cancelled response
     cancel = function(response_id) {
       self$client$request("POST", paste0("/responses/", response_id, "/cancel"))
     },
     
-    #' List input items for a response
-    #'
-    #' @param response_id Response ID
-    #' @param after Cursor
-    #' @param limit Number of items
-    #' @return List of input items
+    # List input items for a response
+    #
+    # @param response_id Response ID
+    # @param after Cursor
+    # @param limit Number of items
+    # @return List of input items
     list_input_items = function(response_id, after = NULL, limit = NULL) {
       query <- list()
       if (!is.null(after)) query$after <- after

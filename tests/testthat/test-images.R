@@ -6,6 +6,8 @@ test_that("Images client initializes", {
 })
 
 test_that("Image create accepts required parameters", {
+  skip_on_cran()
+  skip_if(Sys.getenv("OPENAI_API_KEY") == "" || Sys.getenv("OPENAI_API_KEY") == "test-key", "No valid API key")
   client <- OpenAI$new(api_key = "test-key")
   
   expect_error(
@@ -18,6 +20,8 @@ test_that("Image create accepts required parameters", {
 })
 
 test_that("Image create accepts optional parameters", {
+  skip_on_cran()
+  skip_if(Sys.getenv("OPENAI_API_KEY") == "" || Sys.getenv("OPENAI_API_KEY") == "test-key", "No valid API key")
   client <- OpenAI$new(api_key = "test-key")
   
   expect_error(

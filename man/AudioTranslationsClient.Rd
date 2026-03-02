@@ -39,24 +39,6 @@ Audio Translations Client
 )}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{file}}{Audio file path}
-
-\item{\code{model}}{Model to use (e.g., "whisper-1")}
-
-\item{\code{prompt}}{Optional text to guide translation}
-
-\item{\code{response_format}}{Response format}
-
-\item{\code{temperature}}{Sampling temperature}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Translation response
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AudioTranslationsClient-clone"></a>}}

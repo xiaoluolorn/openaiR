@@ -39,24 +39,6 @@ Speech Client
 )}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{input}}{Text to synthesize}
-
-\item{\code{model}}{Model to use (e.g., "tts-1", "tts-1-hd")}
-
-\item{\code{voice}}{Voice to use ("alloy", "echo", "fable", "onyx", "nova", "shimmer")}
-
-\item{\code{response_format}}{Response format ("mp3", "opus", "aac", "flac", "wav", "pcm")}
-
-\item{\code{speed}}{Speech speed (0.25 to 4.0)}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Raw audio data (not parsed as JSON)
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-SpeechClient-clone"></a>}}

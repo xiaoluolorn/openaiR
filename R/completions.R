@@ -9,32 +9,32 @@ CompletionsClient <- R6::R6Class(
   public = list(
     client = NULL,
     
-    #' Initialize completions client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize completions client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
     },
     
-    #' Create a completion (legacy)
-    #'
-    #' @param prompt Text prompt or array of prompts
-    #' @param model Model to use (e.g., "gpt-3.5-turbo-instruct", "davinci-002")
-    #' @param max_tokens Maximum tokens to generate
-    #' @param temperature Sampling temperature (0-2)
-    #' @param top_p Nucleus sampling parameter
-    #' @param n Number of completions
-    #' @param stream Whether to stream response
-    #' @param logprobs Include log probabilities
-    #' @param echo Echo back the prompt
-    #' @param stop Stop sequences
-    #' @param presence_penalty Presence penalty
-    #' @param frequency_penalty Frequency penalty
-    #' @param best_of Generate best of n completions
-    #' @param logit_bias Token bias
-    #' @param user User identifier
-    #' @param callback Callback for streaming
-    #' @return Completion response
+    # Create a completion (legacy)
+    #
+    # @param prompt Text prompt or array of prompts
+    # @param model Model to use (e.g., "gpt-3.5-turbo-instruct", "davinci-002")
+    # @param max_tokens Maximum tokens to generate
+    # @param temperature Sampling temperature (0-2)
+    # @param top_p Nucleus sampling parameter
+    # @param n Number of completions
+    # @param stream Whether to stream response
+    # @param logprobs Include log probabilities
+    # @param echo Echo back the prompt
+    # @param stop Stop sequences
+    # @param presence_penalty Presence penalty
+    # @param frequency_penalty Frequency penalty
+    # @param best_of Generate best of n completions
+    # @param logit_bias Token bias
+    # @param user User identifier
+    # @param callback Callback for streaming
+    # @return Completion response
     create = function(prompt, model = "gpt-3.5-turbo-instruct",
                       max_tokens = NULL,
                       temperature = NULL,

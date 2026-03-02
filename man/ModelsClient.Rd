@@ -24,14 +24,6 @@ Client for OpenAI Models API.
 \if{html}{\out{<div class="r">}}\preformatted{ModelsClient$new(parent)}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{parent}}{Parent OpenAI client
-List available models}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelsClient-list"></a>}}
@@ -41,10 +33,6 @@ List available models}
 \if{html}{\out{<div class="r">}}\preformatted{ModelsClient$list()}\if{html}{\out{</div>}}
 }
 
-\subsection{Returns}{
-Models list response
-Retrieve a specific model
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelsClient-retrieve"></a>}}
@@ -54,17 +42,6 @@ Retrieve a specific model
 \if{html}{\out{<div class="r">}}\preformatted{ModelsClient$retrieve(model)}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{model}}{Model ID (e.g., "gpt-4", "text-embedding-ada-002")}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Model details
-Delete a fine-tuned model
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelsClient-delete"></a>}}
@@ -74,16 +51,6 @@ Delete a fine-tuned model
 \if{html}{\out{<div class="r">}}\preformatted{ModelsClient$delete(model)}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{model}}{Model ID}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Deletion status
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelsClient-clone"></a>}}

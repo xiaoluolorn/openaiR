@@ -8,24 +8,24 @@ ImagesClient <- R6::R6Class(
   public = list(
     client = NULL,
 
-    #' Initialize images client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize images client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
     },
 
-    #' Create an image
-    #'
-    #' @param prompt Text description of the desired image
-    #' @param model Model to use (e.g., "dall-e-3", "dall-e-2")
-    #' @param n Number of images to generate
-    #' @param quality Quality of generated image ("standard" or "hd")
-    #' @param response_format Response format ("url" or "b64_json")
-    #' @param size Size of generated image (e.g., "1024x1024")
-    #' @param style Style of generated image ("vivid" or "natural")
-    #' @param user Unique identifier for end user
-    #' @return Images response
+    # Create an image
+    #
+    # @param prompt Text description of the desired image
+    # @param model Model to use (e.g., "dall-e-3", "dall-e-2")
+    # @param n Number of images to generate
+    # @param quality Quality of generated image ("standard" or "hd")
+    # @param response_format Response format ("url" or "b64_json")
+    # @param size Size of generated image (e.g., "1024x1024")
+    # @param style Style of generated image ("vivid" or "natural")
+    # @param user Unique identifier for end user
+    # @return Images response
     create = function(prompt, model = "dall-e-3",
                       n = NULL,
                       quality = NULL,
@@ -48,17 +48,17 @@ ImagesClient <- R6::R6Class(
       self$client$request("POST", "/images/generations", body = body)
     },
 
-    #' Create an edited image
-    #'
-    #' @param image Image file path to edit
-    #' @param prompt Text description of desired edit
-    #' @param mask Mask file path (optional)
-    #' @param model Model to use
-    #' @param n Number of images to generate
-    #' @param response_format Response format
-    #' @param size Size of generated image
-    #' @param user Unique identifier
-    #' @return Images response
+    # Create an edited image
+    #
+    # @param image Image file path to edit
+    # @param prompt Text description of desired edit
+    # @param mask Mask file path (optional)
+    # @param model Model to use
+    # @param n Number of images to generate
+    # @param response_format Response format
+    # @param size Size of generated image
+    # @param user Unique identifier
+    # @return Images response
     edit = function(image, prompt, mask = NULL, model = "dall-e-2",
                     n = NULL, response_format = NULL, size = NULL, user = NULL) {
       params <- list(
@@ -79,15 +79,15 @@ ImagesClient <- R6::R6Class(
       )
     },
 
-    #' Create an image variation
-    #'
-    #' @param image Image file path to vary
-    #' @param model Model to use
-    #' @param n Number of images to generate
-    #' @param response_format Response format
-    #' @param size Size of generated image
-    #' @param user Unique identifier
-    #' @return Images response
+    # Create an image variation
+    #
+    # @param image Image file path to vary
+    # @param model Model to use
+    # @param n Number of images to generate
+    # @param response_format Response format
+    # @param size Size of generated image
+    # @param user Unique identifier
+    # @return Images response
     create_variation = function(image, model = "dall-e-2",
                                 n = NULL, response_format = NULL,
                                 size = NULL, user = NULL) {

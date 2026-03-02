@@ -9,20 +9,20 @@ BatchClient <- R6::R6Class(
   public = list(
     client = NULL,
     
-    #' Initialize batch client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize batch client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
     },
     
-    #' Create a batch
-    #'
-    #' @param input_file_id File ID containing batch requests
-    #' @param endpoint Endpoint for batch: "/v1/chat/completions", "/v1/embeddings", "/v1/completions"
-    #' @param completion_window Completion window: "24h"
-    #' @param metadata Optional metadata
-    #' @return Batch object
+    # Create a batch
+    #
+    # @param input_file_id File ID containing batch requests
+    # @param endpoint Endpoint for batch: "/v1/chat/completions", "/v1/embeddings", "/v1/completions"
+    # @param completion_window Completion window: "24h"
+    # @param metadata Optional metadata
+    # @return Batch object
     create = function(input_file_id, endpoint, completion_window = "24h", metadata = NULL) {
       body <- list(
         input_file_id = input_file_id,
@@ -35,11 +35,11 @@ BatchClient <- R6::R6Class(
       self$client$request("POST", "/batches", body = body)
     },
     
-    #' List batches
-    #'
-    #' @param after Cursor for pagination
-    #' @param limit Number of batches to return
-    #' @return List of batches
+    # List batches
+    #
+    # @param after Cursor for pagination
+    # @param limit Number of batches to return
+    # @return List of batches
     list = function(after = NULL, limit = NULL) {
       query <- list()
       if (!is.null(after)) query$after <- after
@@ -48,18 +48,18 @@ BatchClient <- R6::R6Class(
       self$client$request("GET", "/batches", query = query)
     },
     
-    #' Retrieve a batch
-    #'
-    #' @param batch_id Batch ID
-    #' @return Batch object
+    # Retrieve a batch
+    #
+    # @param batch_id Batch ID
+    # @return Batch object
     retrieve = function(batch_id) {
       self$client$request("GET", paste0("/batches/", batch_id))
     },
     
-    #' Cancel a batch
-    #'
-    #' @param batch_id Batch ID
-    #' @return Cancelled batch
+    # Cancel a batch
+    #
+    # @param batch_id Batch ID
+    # @return Cancelled batch
     cancel = function(batch_id) {
       self$client$request("POST", paste0("/batches/", batch_id, "/cancel"))
     }

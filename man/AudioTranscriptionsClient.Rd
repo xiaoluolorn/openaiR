@@ -41,28 +41,6 @@ Audio Transcriptions Client
 )}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{file}}{Audio file path}
-
-\item{\code{model}}{Model to use (e.g., "whisper-1")}
-
-\item{\code{language}}{Language code (ISO-639-1)}
-
-\item{\code{prompt}}{Optional text to guide transcription}
-
-\item{\code{response_format}}{Response format ("json", "text", "srt", "verbose_json", "vtt")}
-
-\item{\code{temperature}}{Sampling temperature}
-
-\item{\code{timestamp_granularities}}{List of timestamp granularities}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Transcription response
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AudioTranscriptionsClient-clone"></a>}}

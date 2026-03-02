@@ -203,4 +203,4 @@ client <- OpenAI$new(
 - See `vignette("quickstart")` for more examples
 - Read `vignette("function-calling")` for advanced function calling
 - Check `vignette("error-handling")` for detailed error handling guide
-- Visit the [reference documentation](https://xiaoluolorn.github.io/openaiR/reference/) for complete API details
+- Visit the [GitHub repository](https://github.com/xiaoluolorn/openaiR) for complete API details

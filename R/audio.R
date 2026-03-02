@@ -8,18 +8,18 @@ AudioClient <- R6::R6Class(
   public = list(
     client = NULL,
 
-    #' @field transcriptions Audio transcription interface
+    # Field: transcriptions Audio transcription interface
     transcriptions = NULL,
 
-    #' @field translations Audio translation interface
+    # Field: translations Audio translation interface
     translations = NULL,
 
-    #' @field speech Text-to-speech interface
+    # Field: speech Text-to-speech interface
     speech = NULL,
 
-    #' Initialize audio client
-    #'
-    #' @param parent Parent OpenAI client
+    # Initialize audio client
+    #
+    # @param parent Parent OpenAI client
     initialize = function(parent) {
       self$client <- parent
       self$transcriptions <- AudioTranscriptionsClient$new(parent)
@@ -40,16 +40,16 @@ AudioTranscriptionsClient <- R6::R6Class(
       self$client <- parent
     },
 
-    #' Transcribe audio to text
-    #'
-    #' @param file Audio file path
-    #' @param model Model to use (e.g., "whisper-1")
-    #' @param language Language code (ISO-639-1)
-    #' @param prompt Optional text to guide transcription
-    #' @param response_format Response format ("json", "text", "srt", "verbose_json", "vtt")
-    #' @param temperature Sampling temperature
-    #' @param timestamp_granularities List of timestamp granularities
-    #' @return Transcription response
+    # Transcribe audio to text
+    #
+    # @param file Audio file path
+    # @param model Model to use (e.g., "whisper-1")
+    # @param language Language code (ISO-639-1)
+    # @param prompt Optional text to guide transcription
+    # @param response_format Response format ("json", "text", "srt", "verbose_json", "vtt")
+    # @param temperature Sampling temperature
+    # @param timestamp_granularities List of timestamp granularities
+    # @return Transcription response
     create = function(file, model = "whisper-1",
                       language = NULL,
                       prompt = NULL,
@@ -89,14 +89,14 @@ AudioTranslationsClient <- R6::R6Class(
       self$client <- parent
     },
 
-    #' Translate audio to English text
-    #'
-    #' @param file Audio file path
-    #' @param model Model to use (e.g., "whisper-1")
-    #' @param prompt Optional text to guide translation
-    #' @param response_format Response format
-    #' @param temperature Sampling temperature
-    #' @return Translation response
+    # Translate audio to English text
+    #
+    # @param file Audio file path
+    # @param model Model to use (e.g., "whisper-1")
+    # @param prompt Optional text to guide translation
+    # @param response_format Response format
+    # @param temperature Sampling temperature
+    # @return Translation response
     create = function(file, model = "whisper-1",
                       prompt = NULL,
                       response_format = NULL,
@@ -129,14 +129,14 @@ SpeechClient <- R6::R6Class(
       self$client <- parent
     },
 
-    #' Generate speech from text
-    #'
-    #' @param input Text to synthesize
-    #' @param model Model to use (e.g., "tts-1", "tts-1-hd")
-    #' @param voice Voice to use ("alloy", "echo", "fable", "onyx", "nova", "shimmer")
-    #' @param response_format Response format ("mp3", "opus", "aac", "flac", "wav", "pcm")
-    #' @param speed Speech speed (0.25 to 4.0)
-    #' @return Raw audio data (not parsed as JSON)
+    # Generate speech from text
+    #
+    # @param input Text to synthesize
+    # @param model Model to use (e.g., "tts-1", "tts-1-hd")
+    # @param voice Voice to use ("alloy", "echo", "fable", "onyx", "nova", "shimmer")
+    # @param response_format Response format ("mp3", "opus", "aac", "flac", "wav", "pcm")
+    # @param speed Speech speed (0.25 to 4.0)
+    # @return Raw audio data (not parsed as JSON)
     create = function(input, model = "tts-1",
                       voice = "alloy",
                       response_format = NULL,

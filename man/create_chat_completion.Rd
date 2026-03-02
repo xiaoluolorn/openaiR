@@ -7,25 +7,25 @@
 create_chat_completion(messages, model = "gpt-3.5-turbo", ...)
 }
 \arguments{
-\item{messages}{\strong{\link{Required}} List of message objects. Each must have
+\item{messages}{\strong{Required.} List of message objects. Each must have
 \code{role} (\code{"system"}, \code{"user"}, \code{"assistant"}) and
 \code{content} fields.}
 
 \item{model}{Character. Model ID. Default: \code{"gpt-3.5-turbo"}.}
 
 \item{...}{Additional parameters passed to
-\code{\link{ChatCompletionsClient}}\code{$create()}, such as
+\link{ChatCompletionsClient}\verb{$create()}, such as
 \code{temperature}, \code{max_tokens}, \code{stream}, etc.}
 }
 \value{
 A chat completion list object. Key fields:
 \itemize{
-\item \code{$choices[[1]]$message$content} — The generated text
-\item \code{$usage$total_tokens} — Total tokens consumed
+\item \verb{$choices[[1]]$message$content} — The generated text
+\item \verb{$usage$total_tokens} — Total tokens consumed
 }
 }
 \description{
-A shortcut that automatically creates an \code{\link{OpenAI}} client from the
+A shortcut that automatically creates an \link{OpenAI} client from the
 \code{OPENAI_API_KEY} environment variable and calls
 \code{client$chat$completions$create()}.
 }
